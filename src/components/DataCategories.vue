@@ -27,21 +27,17 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.name"
-                        label="Dessert name"
+                        v-model="editedItem.nombre"
+                        label="nombre"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.calories"
-                        label="Calories"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.fat"
-                        label="Fat (g)"
-                      ></v-text-field>
+                      <v-textarea
+                        v-model="editedItem.descripcion"
+                        label="descripcion"
+                        no-resize
+                        auto-grow
+                      ></v-textarea>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -97,6 +93,7 @@ export default {
     headers: [
       { text: "Nombre", value: "nombre" },
       { text: "Estado", value: "estado" },
+      { text: "Descripción", value: "descripcion" },
       { text: "Aciones", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -146,7 +143,7 @@ export default {
 
     list() {
       axios
-        .get("http://localhost:3001/api/categoria/list")
+        .get("http://localhost:3000/api/categoria/list")
         .then((response) => {
           this.categorias = response.data;
         
