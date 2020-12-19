@@ -101,7 +101,7 @@ export default {
     editedIndex: -1,
     editedItem: {
       nombre: "",
-      descripcion: 0,
+      descripcion: '',
       estado: 0,
     },
     defaultItem: {
@@ -154,15 +154,50 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = item.id;
+      console.log(this.editedItem)
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
+      //this.editedIndex = this.desserts.indexOf(item);
+      //this.dialogDelete = true;
+      if (item.estado === 0){
+        axios
+        .put("http://localhost:3000/api/categoria/activate",{
+          'id':this.editedItem.id,
+          'nombre':this.editedItem.nombre,
+          'estado':1
+        })
+        .then((response) => {
+          this.list()
+          return response
+        
+        })
+        .catch((error) => {
+          return error
+        });
+      }else{
+        axios
+        .put("http://localhost:3000/api/categoria/deactivate",{
+          'id':this.editedItem.id,
+          'nombre':this.editedItem.nombre,
+          'estado':0
+        })
+        .then((response) => {
+          this.list()
+          return response
+        
+        })
+        .catch((error) => {
+          return error
+        });
+      }
+    
+
+
     },
 
     deleteItemConfirm() {
@@ -188,9 +223,39 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        //Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        axios
+        .put("http://localhost:3000/api/categoria/update",{
+          'id':this.editedItem.id,
+          'nombre': this.editedItem.nombre,
+          'descripcion': this.editedItem.descripcion
+          
+        })
+        .then((response) => {
+          this.list()
+          return response
+        
+        })
+        .catch((error) => {
+          return error
+        });
       } else {
-        this.desserts.push(this.editedItem);
+        //this.desserts.push(this.editedItem);
+        axios        
+        .post("http://localhost:3000/api/categoria/add",{
+          'nombre': this.editedItem.nombre,
+          'descripcion': this.editedItem.descripcion,
+          'estado': 0
+          
+        })
+        .then((response) => {
+          this.list()
+          return response
+        
+        })
+        .catch((error) => {
+          return error
+        });
       }
       this.close();
     },
