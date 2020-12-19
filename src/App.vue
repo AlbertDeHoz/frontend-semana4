@@ -72,7 +72,7 @@ export default {
         items: [
           { to:'/', title: 'Home', icon: 'mdi-view-dashboard' },
           { to: '/categorias', title: 'Categorías', icon: 'mdi-forum' },
-          { to: '/Articulos', title: 'Artículos', icon: 'mdi-forum' }
+          { to: '/articulos', title: 'Artículos', icon: 'mdi-forum' }
         ],
       }
   },

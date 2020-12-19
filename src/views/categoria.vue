@@ -1,7 +1,9 @@
 <template>
+<v-app>
     <v-container>
-        <data-categories/> 
+        <data-categories/>
     </v-container>
+</v-app>
 </template>
 
 <script>

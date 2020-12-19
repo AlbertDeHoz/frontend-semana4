@@ -1,10 +1,8 @@
 <template>
     <v-app>
         <v-container>
-            <div>hola</div>
+            <div>hola si</div>
         </v-container>
-
-    <router-view/>
     </v-app>
 
 </template>
