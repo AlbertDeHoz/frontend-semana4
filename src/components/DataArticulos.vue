@@ -27,20 +27,20 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.name"
+                        v-model="editedItem.nombre"
                         label="Nombre"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.calories"
+                        v-model="editedItem.descripcion"
                         label="descripción"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.fat"
-                        label="estado"
+                        v-model="editedItem.codigo"
+                        label="codigo"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -52,15 +52,16 @@
                 <v-btn color="blue darken-1" text @click="close">
                   Cancelar
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
+                <v-btn color="blue darken-1" text @click="save">
+                  Guardar
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
-              <v-card-title class="headline"
-                >Estás seguro de eliminar esta categoría?</v-card-title
-              >
+              <v-card-title class="headline">{{ mensaje }}</v-card-title>
+
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeDelete"
@@ -83,7 +84,6 @@
         <v-btn color="primary" @click="list"> Reiniciar </v-btn>
       </template>
     </v-data-table>
-    
   </v-app>
 </template>
 <script>
@@ -104,14 +104,16 @@ export default {
     editedIndex: -1,
     editedItem: {
       nombre: "",
-      descripcion: 0,
-      estado: 0,
+      descripcion: "",
+      estado: 1,
     },
     defaultItem: {
       nombre: "",
       articulo: 0,
       estado: 0,
     },
+    mensaje: "eliminar??",
+    articuloActDesact: [],
   }),
 
   computed: {
@@ -134,13 +136,11 @@ export default {
   },
 
   methods: {
-  
     list() {
       axios
         .get("http://localhost:3001/api/articulo/list")
         .then((response) => {
           this.articulos = response.data;
-        
         })
         .catch((error) => {
           console.log(error);
@@ -154,14 +154,53 @@ export default {
     },
 
     deleteItem(item) {
-      this.editedIndex = this.articulos.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.articuloActDesact = item;
+     
+      if (item.estado === 0) {
+        this.mensaje = "Estás seguro que deseas activar este artículo??";
+      }
+      if (item.estado === 1) {
+        this.mensaje = "Estás seguro que deseas desactivar este artículo??";
+      }
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.articulos.splice(this.editedIndex, 1);
-      this.closeDelete();
+      //this.articulos.splice(this.editedIndex, 1);
+     
+      let articuloActDesact=this.articuloActDesact
+      this.editedItem = Object.assign({}, articuloActDesact);
+     
+
+      if (articuloActDesact.estado === 0) {
+        axios
+          .put("http://localhost:3001/api/articulo/activate", {
+            id: this.editedItem.id,
+          })
+          .then((response) => {
+            this.list();
+
+            return response;
+          })
+          .catch((error) => {
+            return error;
+          });
+      } else {
+        axios
+          .put("http://localhost:3001/api/articulo/deactivate", {
+            id: this.editedItem.id,
+          })
+          .then((response) => {
+            this.list();
+
+            return response;
+          })
+          .catch((error) => {
+            return error;
+          });
+      }
+       this.closeDelete();
+      
     },
 
     close() {
@@ -182,9 +221,36 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        axios
+          .put("http://localhost:3001/api/articulo/update", {
+            nombre: this.editedItem.nombre,
+            descripcion: this.editedItem.descripcion,
+            estado: this.editedItem.estado,
+            codigo: this.editedItem.codigo,
+            id: this.editedItem.id,
+          })
+          .then((response) => {
+            this.list();
+            return response;
+          })
+          .catch((error) => {
+            return error;
+          });
       } else {
-        this.desserts.push(this.editedItem);
+        axios
+          .post("http://localhost:3001/api/articulo/add", {
+            nombre: this.editedItem.nombre,
+            descripcion: this.editedItem.descripcion,
+            estado: 1,
+            codigo: this.editedItem.codigo,
+          })
+          .then((response) => {
+            this.list();
+            return response;
+          })
+          .catch((error) => {
+            return error;
+          });
       }
       this.close();
     },
