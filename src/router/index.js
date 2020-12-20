@@ -11,28 +11,37 @@ const routes = [
     component: Home,
 
   },
-
   {
-    path: '/categorias',
-    name: 'About',
+    path: '/auth',
+    name: 'Autorizacion',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "categoria" */ '../views/categoria.vue')
-  },
-  {
-    path: '/articulos',
-    name: 'Articulos',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "articulos" */ '../views/articulos.vue'),
+    component: () => import(/* webpackChunkName: "categoria" */ '../views/authApp.vue'),
     children: [{
-      path: 'hola',
+      path: '/',
       name: 'about',
-      component: () => import(/* webpackChunkName: "about" */ '../views/about.vue')
-    }],
-  }
+      component: () => import(/* webpackChunkName: "about" */ '../views/authHome.vue')
+    },
+    {
+      path: 'categorias',
+      name: 'About',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "categoria" */ '../views/categoria.vue')
+    },
+    {
+      path: 'articulos',
+      name: 'Articulos',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "articulos" */ '../views/articulos.vue'),
+    }
+  ],
+  },
+
 ]
 
 const router = new VueRouter({
