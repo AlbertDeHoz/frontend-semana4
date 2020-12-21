@@ -8,7 +8,10 @@
   
         <v-spacer></v-spacer>
   
-        <v-btn icon>
+        <v-btn 
+        icon
+        @click="salir()"
+        >
           <v-icon>mdi-magnify</v-icon>
           
         </v-btn>
@@ -76,5 +79,13 @@ export default {
         ],
       }
   },
+  created () {
+    this.$store.dispatch('autoLogin')
+  },
+  methods: {
+    salir () {
+      this.$store.dispatch('salir');
+    }
+  }
 };
 </script>
