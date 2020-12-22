@@ -8,14 +8,14 @@
   
         <v-spacer></v-spacer>
   
-        <v-btn icon>
+        <v-btn 
+        icon
+        @click="salir()"
+        >
           <v-icon>mdi-magnify</v-icon>
           
         </v-btn>
   
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
       </v-toolbar>
     <v-navigation-drawer
       v-model="drawer"
@@ -76,5 +76,13 @@ export default {
         ],
       }
   },
+  created () {
+    this.$store.dispatch('autoLogin')
+  },
+  methods: {
+    salir () {
+      this.$store.dispatch('salir');
+    }
+  }
 };
 </script>
