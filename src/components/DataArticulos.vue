@@ -43,6 +43,21 @@
                         label="codigo"
                       ></v-text-field>
                     </v-col>
+                    <v-col cols="12" sm="6" md="6">
+                      <div class="opciones">
+                        <label>Seleccione una categoría</label>
+                        <select v-model="editedItem.categoriaId">
+                           
+                          <option
+                            v-for="categoria in categorias"
+                            :key="categoria.id"
+                            :value="categoria.id"
+                          >
+                            {{ categoria.nombre }}
+                          </option>
+                        </select>
+                      </div>
+                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -98,6 +113,7 @@ export default {
       { text: "Nombre", value: "nombre" },
       { text: "Estado", value: "estado" },
       { text: "Descripción", value: "descripcion" },
+      { text: "Categoría", value: "categoria.nombre" },
       { text: "Aciones", value: "actions", sortable: false },
     ],
     articulos: [],
@@ -106,14 +122,18 @@ export default {
       nombre: "",
       descripcion: "",
       estado: 1,
+      
+      
     },
     defaultItem: {
       nombre: "",
       articulo: 0,
       estado: 0,
+      
     },
     mensaje: "eliminar??",
     articuloActDesact: [],
+    categorias: [],
   }),
 
   computed: {
@@ -133,12 +153,24 @@ export default {
 
   created() {
     this.list();
+    this.listarCategorias();
   },
 
   methods: {
+    listarCategorias() {
+      axios
+        .get("http://localhost:3000/api/categoria/list")
+        .then((response) => {
+          this.categorias = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     list() {
       axios
-        .get("http://localhost:3001/api/articulo/list")
+        .get("http://localhost:3000/api/articulo/list")
         .then((response) => {
           this.articulos = response.data;
         })
@@ -155,7 +187,7 @@ export default {
 
     deleteItem(item) {
       this.articuloActDesact = item;
-     
+
       if (item.estado === 0) {
         this.mensaje = "Estás seguro que deseas activar este artículo??";
       }
@@ -167,14 +199,13 @@ export default {
 
     deleteItemConfirm() {
       //this.articulos.splice(this.editedIndex, 1);
-     
-      let articuloActDesact=this.articuloActDesact
+
+      let articuloActDesact = this.articuloActDesact;
       this.editedItem = Object.assign({}, articuloActDesact);
-     
 
       if (articuloActDesact.estado === 0) {
         axios
-          .put("http://localhost:3001/api/articulo/activate", {
+          .put("http://localhost:3000/api/articulo/activate", {
             id: this.editedItem.id,
           })
           .then((response) => {
@@ -187,7 +218,7 @@ export default {
           });
       } else {
         axios
-          .put("http://localhost:3001/api/articulo/deactivate", {
+          .put("http://localhost:3000/api/articulo/deactivate", {
             id: this.editedItem.id,
           })
           .then((response) => {
@@ -199,8 +230,7 @@ export default {
             return error;
           });
       }
-       this.closeDelete();
-      
+      this.closeDelete();
     },
 
     close() {
@@ -222,12 +252,13 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         axios
-          .put("http://localhost:3001/api/articulo/update", {
+          .put("http://localhost:3000/api/articulo/update", {
             nombre: this.editedItem.nombre,
             descripcion: this.editedItem.descripcion,
             estado: this.editedItem.estado,
             codigo: this.editedItem.codigo,
             id: this.editedItem.id,
+            categoriaId: this.editedItem.categoriaId,
           })
           .then((response) => {
             this.list();
@@ -238,17 +269,20 @@ export default {
           });
       } else {
         axios
-          .post("http://localhost:3001/api/articulo/add", {
+          .post("http://localhost:3000/api/articulo/add", {
             nombre: this.editedItem.nombre,
             descripcion: this.editedItem.descripcion,
             estado: 1,
             codigo: this.editedItem.codigo,
+            categoriaId: this.editedItem.categoriaId,
           })
           .then((response) => {
             this.list();
+            console.log(response);
             return response;
           })
           .catch((error) => {
+            console.log(error);
             return error;
           });
       }
@@ -257,3 +291,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.opciones {
+  padding: 5px;
+  border-bottom: solid 1px #949494;
+}
+</style>
