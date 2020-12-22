@@ -30,6 +30,10 @@ export default new Vuex.Store({
         if (token){
             commit('setToken',token);
             commit ('setUsuario',jwtdecode(token));
+        }else{
+          commit('setToken',null);
+          commit('setUsuario',null);
+          localStorage.removeItem('token');
         }
     },
     salir({commit}){

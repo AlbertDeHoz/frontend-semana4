@@ -78,6 +78,7 @@ export default {
        
   }),  
   beforeCreate () {
+    //this.$store.dispatch('autoLogin')? console.log('hola login'):this.$router.push({path:'/auth'});
     this.$store.dispatch('autoLogin')? this.$router.push({path:'/auth'}):false;
   },
 
@@ -95,7 +96,7 @@ export default {
             let token = data.tokenReturn;
             //localStorage.setItem("jwt", token);
             //localStorage.setItem("user", JSON.stringify(user));
-            console.log(token);
+            //console.log(token);
             if (token) {
                 this.$store.dispatch('guardarToken',data.tokenReturn)
                 this.$router.push("/auth");

@@ -23,7 +23,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "categoria" */ '../views/Login.vue'),
     meta: {
-      public:true
+      public:true,
     }
   },
   {
@@ -34,9 +34,8 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "categoria" */ '../views/authApp.vue'),
     meta: {
-      auth:true
+      auth:true,
     },
-
     children: [{
       path: '/',
       name: 'authHome',
@@ -68,11 +67,23 @@ const router = new VueRouter({
   //base: process.env.BASE_URL,
   routes
 });
-router.beforeEach((to, from, next)=>{
-  if(to.matched.some(record  => record.meta.public)){
+router.beforeEach((to, from,next)=>{
+   if(to.matched.some(record  => record.meta.public)){
     next();
+   }else if(to.matched.some(record  => record.meta.auth )){
+      if (store.state.user && store.state.user.rol === 'Administrador' ){      
+        next()
+      }else{
+        next({name:"Login"})
+      }
+   }
+})
+ /*router.beforeEach((to, from, next)=>{
+  if(to.matched.some(record  => record.meta.public)){
+    next({name:'Login'});
   }else if (to.matched.some(record  => record.meta.auth)){
     if (store.state.user && store.state.user.rol === 'Administrador'){
+      
       next({name:"Autorizacion"})
     }else{
       next({name:"Login"})
@@ -80,6 +91,6 @@ router.beforeEach((to, from, next)=>{
   }else{
     next();
   }
-})
+})*/
 //sesion clase de la noche y aclaración de dudas 52min
 export default router
