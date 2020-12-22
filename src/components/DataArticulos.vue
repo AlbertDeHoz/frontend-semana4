@@ -159,7 +159,12 @@ export default {
   methods: {
     listarCategorias() {
       axios
-        .get("http://localhost:3000/api/categoria/list")
+        .get("http://localhost:3000/api/categoria/list",
+        {
+          headers: {
+            token: this.$store.state.token
+          }
+        })
         .then((response) => {
           this.categorias = response.data;
         })
@@ -170,7 +175,11 @@ export default {
 
     list() {
       axios
-        .get("http://localhost:3000/api/articulo/list")
+        .get("http://localhost:3000/api/articulo/list",{
+          headers: {
+            token: this.$store.state.token
+          }
+        })
         .then((response) => {
           this.articulos = response.data;
         })
@@ -207,6 +216,10 @@ export default {
         axios
           .put("http://localhost:3000/api/articulo/activate", {
             id: this.editedItem.id,
+          },{
+            headers: {
+            token: this.$store.state.token
+          }
           })
           .then((response) => {
             this.list();
@@ -220,6 +233,10 @@ export default {
         axios
           .put("http://localhost:3000/api/articulo/deactivate", {
             id: this.editedItem.id,
+          },{
+            headers: {
+            token: this.$store.state.token
+          }
           })
           .then((response) => {
             this.list();
@@ -259,6 +276,10 @@ export default {
             codigo: this.editedItem.codigo,
             id: this.editedItem.id,
             categoriaId: this.editedItem.categoriaId,
+          },{
+            headers: {
+            token: this.$store.state.token
+          }
           })
           .then((response) => {
             this.list();
@@ -275,6 +296,10 @@ export default {
             estado: 1,
             codigo: this.editedItem.codigo,
             categoriaId: this.editedItem.categoriaId,
+          },{
+            headers: {
+            token: this.$store.state.token
+          }
           })
           .then((response) => {
             this.list();

@@ -7,12 +7,19 @@
         <v-toolbar-title>Title</v-toolbar-title>
   
         <v-spacer></v-spacer>
+        <v-btn 
+        icon
+        to ="/"
+        >
+          <v-icon>mdi-home-variant</v-icon>
+          
+        </v-btn>
   
         <v-btn 
         icon
         @click="salir()"
         >
-          <v-icon>mdi-magnify</v-icon>
+          <v-icon>mdi-arrow-left</v-icon>
           
         </v-btn>
   
@@ -28,7 +35,7 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>Leonard Cohen</v-list-item-title>
+          <v-list-item-title>{{this.$store.state.user.rol}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -72,7 +79,8 @@ export default {
         items: [
           { to:'/', title: 'Home', icon: 'mdi-view-dashboard' },
           { to: '/auth/categorias', title: 'Categorías', icon: 'mdi-forum' },
-          { to: '/auth/articulos', title: 'Artículos', icon: 'mdi-forum' }
+          { to: '/auth/articulos', title: 'Artículos', icon: 'mdi-forum' },
+          { to: '/auth/usuarios', title: 'Usuarios', icon: 'mdi-account-group' }
         ],
       }
   },
