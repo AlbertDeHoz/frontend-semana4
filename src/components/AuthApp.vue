@@ -4,15 +4,22 @@
       <v-toolbar>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
   
-        <v-toolbar-title>Title</v-toolbar-title>
+        <v-toolbar-title>Proyecto Final</v-toolbar-title>
   
         <v-spacer></v-spacer>
+        <v-btn 
+        icon
+        to ="/"
+        >
+          <v-icon>mdi-home-variant</v-icon>
+          
+        </v-btn>
   
         <v-btn 
         icon
         @click="salir()"
         >
-          <v-icon>mdi-magnify</v-icon>
+          <v-icon>mdi-arrow-left</v-icon>
           
         </v-btn>
   
@@ -28,7 +35,7 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>Leonard Cohen</v-list-item-title>
+          <v-list-item-title>{{this.$store.state.user.rol}}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -36,16 +43,18 @@
 
       <v-list dense>
         <v-list-item
-          v-for="item in items"
+          v-for="item in isAdmin()"
           :key="item.title"
           link
           :to = "item.to"
         >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+          <v-list-item-icon 
+          >
+            <v-icon>{{item.icon}}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-content>
+          <v-list-item-content
+          >
             <v-list-item-title >{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -58,7 +67,6 @@
 
 <script>
 //import HelloWorld from './components/HelloWorld';
-
 export default {
   name: 'AuthApp',
 
@@ -70,9 +78,15 @@ export default {
     return {
         drawer: null,
         items: [
-          { to:'/', title: 'Home', icon: 'mdi-view-dashboard' },
+          { to:'/', title: 'Home', icon: 'mdi-view-dashboard'},
           { to: '/auth/categorias', title: 'Categorías', icon: 'mdi-forum' },
-          { to: '/auth/articulos', title: 'Artículos', icon: 'mdi-forum' }
+          { to: '/auth/articulos', title: 'Artículos', icon: 'mdi-forum' },
+          { to: '/auth/usuarios', title: 'Usuarios', icon: 'mdi-account-group'}
+        ],
+        items2: [
+          { to:'/', title: 'Home', icon: 'mdi-view-dashboard'},
+          { to: '/auth/categorias', title: 'Categorías', icon: 'mdi-forum' },
+          { to: '/auth/articulos', title: 'Artículos', icon: 'mdi-forum' },
         ],
       }
   },
@@ -82,6 +96,10 @@ export default {
   methods: {
     salir () {
       this.$store.dispatch('salir');
+    },
+    isAdmin() {
+        return this.$store.state.user.rol==='Administrador'?this.items:this.items2
+      
     }
   }
 };
