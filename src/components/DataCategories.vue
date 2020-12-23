@@ -1,17 +1,23 @@
 <template>
   <v-app id="inspire">
     <v-data-table
-      :headers="headers"
+      :headers="isAdmin() ? headers : headers2"
       :items="categorias"
       sort-by="nombre"
       class="elevation-1"
     >
+    <v-data-iterator
+  disable-filtering
+  disable-pagination
+  disable-sort
+  hide-default-footer
+></v-data-iterator>
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Categorías</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="500px" v-if="isAdmin()">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 Nueva categoría
@@ -94,8 +100,14 @@ export default {
       { text: "Nombre", value: "nombre" },
       { text: "Estado", value: "estado" },
       { text: "Descripción", value: "descripcion" },
-      { text: "Aciones", value: "actions", sortable: false },
+      { text: "Aciones", value: "actions", sortable: false }
     ],
+    headers2: [
+      { text: "Nombre", value: "nombre" },
+      { text: "Estado", value: "estado" },
+      { text: "Descripción", value: "descripcion" },
+    ],
+    type:'A',
     desserts: [],
     categorias: [],
     editedIndex: -1,
@@ -140,7 +152,10 @@ export default {
         },
       ];
     },
+    isAdmin() {
+      return this.$store.state.user.rol==='Administrador'|| this.$store.state.user.rol === 'Almacenero'
 
+    },
     list() {
       axios
         .get("http://localhost:3000/api/categoria/list",{

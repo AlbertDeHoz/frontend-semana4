@@ -106,9 +106,8 @@ router.beforeEach((to, from,next)=>{
    if(to.matched.some(record  => record.meta.public)){
     next();
    }else if(to.matched.some(record  => record.meta.auth )){
-      if (store.state.user){      
+      if (store.state.user){
         next()
-
       }else{
         next({name:"Login"})
       }

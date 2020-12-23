@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-data-table
-      :headers="headers"
+      :headers="isAdmin()?this.headers:this.headers2"
       :items="articulos"
       sort-by="nombre"
       class="elevation-1"
@@ -11,7 +11,7 @@
           <v-toolbar-title>Artículos</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="500px" v-if="isAdmin()">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 Nuevo artículo
@@ -116,6 +116,12 @@ export default {
       { text: "Categoría", value: "categoria.nombre" },
       { text: "Aciones", value: "actions", sortable: false },
     ],
+    headers2: [
+      { text: "Nombre", value: "nombre" },
+      { text: "Estado", value: "estado" },
+      { text: "Descripción", value: "descripcion" },
+      { text: "Categoría", value: "categoria.nombre" },
+    ],
     articulos: [],
     editedIndex: -1,
     editedItem: {
@@ -157,20 +163,26 @@ export default {
   },
 
   methods: {
+    isAdmin(){
+      return this.$store.state.user.rol === 'Administrador' || this.$store.state.user.rol === 'Almacenero'
+    },
     listarCategorias() {
-      axios
-        .get("http://localhost:3000/api/categoria/list",
-        {
-          headers: {
-            token: this.$store.state.token
-          }
-        })
-        .then((response) => {
-          this.categorias = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (this.isAdmin()){
+        axios
+          .get("http://localhost:3000/api/categoria/list",
+          {
+            headers: {
+              token: this.$store.state.token
+            }
+          })
+          .then((response) => {
+            this.categorias = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+      }
     },
 
     list() {
