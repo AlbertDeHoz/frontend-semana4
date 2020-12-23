@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <router-link to = "/auth">auth</router-link>|
-    <router-link to = "/login">login</router-link>
+    <router-link to = "/login">login |</router-link>
+     <router-link to = "/nosotros">Acerca de nosotros |</router-link>
     <landing-page msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
