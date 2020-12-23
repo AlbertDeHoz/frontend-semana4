@@ -18,7 +18,10 @@ const routes = [
   {
     path: '/nosotros',
     name: 'nosotros',
-    component: () => import( '../views/nosotros.vue')
+    component: () => import( '../views/Nosotros.vue'),
+    meta: {
+      public:true,
+    }
   },
   {
     path: '/login',
@@ -27,17 +30,6 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "categoria" */ '../views/Login.vue'),
-    meta: {
-      public:true,
-    }
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "categoria" */ '../views/About.vue'),
     meta: {
       public:true,
     }
@@ -81,8 +73,6 @@ const routes = [
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "articulos" */ '../views/articulos.vue'),
     }, 
-    
-    , 
     {
       path: 'usuarios',
       name: 'usuarios',
