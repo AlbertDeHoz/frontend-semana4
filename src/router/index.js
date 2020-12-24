@@ -15,11 +15,16 @@ const routes = [
     }
 
   },
+
   {
     path: '/nosotros',
     name: 'nosotros',
-    component: () => import( '../views/nosotros.vue')
-  },
+    component: () => import( '../views/nosotros.vue'),
+    meta: {
+      public:true,
+    }
+  }
+  , 
   {
     path: '/login',
     name: 'Login',
@@ -81,14 +86,13 @@ const routes = [
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "articulos" */ '../views/articulos.vue'),
     }, 
-    
-    , 
+   
     {
       path: 'usuarios',
       name: 'usuarios',
-      component: () => import( '../views/Usuarios.vue'),
+      component: () => import( '../views/Usuarios.vue')
     }
-  ],
+  ]
   },
 
 ]
