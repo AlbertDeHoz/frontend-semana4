@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-app>
     <v-container class="grey lighten-5">
       <v-row no-gutters>
         <v-col
@@ -44,7 +44,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-app>
 </template>
 
 <script>

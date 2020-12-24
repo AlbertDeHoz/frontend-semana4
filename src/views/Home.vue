@@ -1,20 +1,21 @@
 <template>
-  <div class="home">
-    <router-link to = "/auth">auth</router-link>|
-    <router-link to = "/login">login |</router-link>
-     <router-link to = "/nosotros">Acerca de nosotros |</router-link>
+  <v-app>
+    <nav-bar/>
     <landing-page msg="Welcome to Your Vue.js App"/>
-  </div>
+    <footer-page/>
+  </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
+import FooterPage from '../components/FooterPage.vue'
 import LandingPage from '../components/LandingPage.vue'
-
+import NavBar from '../components/NavBar.vue'
 export default {
   name: 'Home',
   components: {
-    LandingPage
+    NavBar,
+    LandingPage,
+    FooterPage
   }
 }
 </script>
