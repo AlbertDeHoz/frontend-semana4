@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <v-container class="grey lighten-5">
+    <v-container class="grey lighten-5 mt-10">
+        <h2>Sobre Nosotros</h2>
       <v-row no-gutters>
         <v-col
           cols="12"
@@ -11,20 +12,19 @@
           :value="miembro.nombre"
         >
           <v-card class="pa-2" outlined tile>
-            <v-card :loading="loading" class="mx-auto my-12" max-width="374">
-              <template slot="progress">
-                <v-progress-linear
-                  color="deep-purple"
-                  height="10"
-                  indeterminate
-                ></v-progress-linear>
-              </template>
+            <v-card :loading="loading" class="mx-auto my-12" max-width="374" height="500">
               <!--<v-img height="250" v-bind:src="'../assets/images'+ 'Emanuel'+'.jpg'" alt="Imagen del integrante"></v-img>
 -->
-              <img :src="getImgUrl(miembro.image)" v-bind:alt="pic" />
+                <v-avatar
+                  class="ma-3 rounded-circle"
+                  size="100"
+                  tile
+                >
+                <img :src="getImgUrl(miembro.image)" v-bind:alt="pic" />
+                </v-avatar>
               <v-card-title>{{ miembro.nombre }}</v-card-title>
 
-              <v-card-text>
+              <v-card-text height="600" >
                 <v-row align="center" class="mx-0">
                   <v-icon color="green darken-2"> mdi-domain </v-icon>
 
