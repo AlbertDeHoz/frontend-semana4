@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar class="indigo accent-1">
+    <v-app-bar class="brown lighten-1">
         <v-avatar
         class="ma-3"
         size="30"
@@ -7,22 +7,25 @@
         >
         <v-img src="https://cdn.pixabay.com/photo/2019/08/11/18/20/icon-4399581_960_720.png"></v-img>
         </v-avatar>
-        <v-toolbar-title class ='yellow--text text--lighten-5'>Inbourn Services</v-toolbar-title>
+        <v-toolbar-title class ='brown--text text--lighten-5'>Inbourn Services</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
         text
-        to='/nosotros'>
+        class ='brown--text text--lighten-5'
+        to='/#'>
             Services
         </v-btn>
         <v-btn
         v-if="inHome()" 
         text
+        class ='brown--text text--lighten-5'
         to='/nosotros'>
             Nosotros
         </v-btn>
         <v-btn
         v-else
         text
+        class ='brown--text text--lighten-5'
         to='/'>
             Home
         </v-btn>

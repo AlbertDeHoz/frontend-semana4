@@ -11,6 +11,7 @@
               :color="item.color"
               dark
               class="mx-10 px-10 brown--text text--darken-5"
+              v-if="item.estado===1"
             >
               <div class="d-flex flex-no-wrap justify-space-between">
                 <div>
@@ -58,21 +59,11 @@ export default {
     data () {
         return {
             clients: customer.user,
-             items: [
-                {
-                    color: '#1F7087',
-                    src: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-                    title: 'Supermodel',
-                    artist: 'Foster the People',
-                },
-                {
-                    color: '#952175',
-                    src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-                    title: 'Halcyon Days',
-                    artist: 'Ellie Goulding',
-                },
-            ]
+
         }
-    }
+    },
+  methods: {
+
+  }
 }
 </script>

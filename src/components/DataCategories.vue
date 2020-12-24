@@ -79,7 +79,8 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon color="blue" @click="deleteItem(item)" v-if="item.estado===1"> mdi-toggle-switch</v-icon>
+        <v-icon  @click="deleteItem(item)" v-else> mdi-toggle-switch-off-outline</v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize"> Reset </v-btn>

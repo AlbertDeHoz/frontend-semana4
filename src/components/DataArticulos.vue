@@ -93,12 +93,21 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon 
+        @click="deleteItem(item)"
+        v-if ="item.estado===0"
+        > mdi-toggle-switch-off-outline </v-icon>
+        <v-icon 
+        @click="deleteItem(item)"
+        v-else
+        color="blue"
+        > mdi-toggle-switch </v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="list"> Reiniciar </v-btn>
       </template>
     </v-data-table>
+    <pre>{{articulos[0].nombre}}</pre>
   </v-app>
 </template>
 <script>
