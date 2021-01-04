@@ -1,26 +1,20 @@
 <template>
   <v-app id="inspire">
     <v-data-table
-      :headers="isAdmin() ? headers : headers2"
-      :items="categorias"
+      :headers="headers"
+      :items="usuarios"
       sort-by="nombre"
       class="elevation-1"
     >
-    <v-data-iterator
-  disable-filtering
-  disable-pagination
-  disable-sort
-  hide-default-footer
-></v-data-iterator>
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Categorías</v-toolbar-title>
+          <v-toolbar-title>Usuarios</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px" v-if="isAdmin()">
+          <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                Nueva categoría
+                Nuevo usuario
               </v-btn>
             </template>
             <v-card>
@@ -39,8 +33,8 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-textarea
-                        v-model="editedItem.descripcion"
-                        label="descripcion"
+                        v-model="editedItem.rol"
+                        label="rol"
                         no-resize
                         auto-grow
                       ></v-textarea>
@@ -79,8 +73,8 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon color="blue" @click="deleteItem(item)" v-if="item.estado===1"> mdi-toggle-switch</v-icon>
-        <v-icon  @click="deleteItem(item)" v-else> mdi-toggle-switch-off-outline</v-icon>
+        <v-icon color="blue" @click="deleteItem(item)" v-if="item.estado===1 && item.rol!=='Administrador'"> mdi-toggle-switch</v-icon>
+        <v-icon  @click="deleteItem(item)" v-else-if="item.rol!=='Administrador'"> mdi-toggle-switch-off-outline</v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -100,21 +94,15 @@ export default {
     headers: [
       { text: "Nombre", value: "nombre" },
       { text: "Estado", value: "estado" },
-      { text: "Descripción", value: "descripcion" },
-      { text: "Aciones", value: "actions", sortable: false }
+      { text: "Rol", value: "rol" },
+      { text: "Aciones", value: "actions", sortable: false },
     ],
-    headers2: [
-      { text: "Nombre", value: "nombre" },
-      { text: "Estado", value: "estado" },
-      { text: "Descripción", value: "descripcion" },
-    ],
-    type:'A',
     desserts: [],
-    categorias: [],
+    usuarios: [],
     editedIndex: -1,
     editedItem: {
       nombre: "",
-      descripcion: '',
+      rol: '',
       estado: 0,
     },
     defaultItem: {
@@ -148,24 +136,21 @@ export default {
       this.desserts = [
         {
           nombre: "Frozen Yogurt",
-          descripcion: 159,
+          rol: 159,
           estado: 6.0,
         },
       ];
     },
-    isAdmin() {
-      return this.$store.state.user.rol==='Administrador'|| this.$store.state.user.rol === 'Almacenero'
 
-    },
     list() {
       axios
-        .get("http://localhost:3000/api/categoria/list",{
+        .get("http://localhost:3000/api/usuario/list",{
           headers: {
             token: this.$store.state.token
           }
         })
         .then((response) => {
-          this.categorias = response.data;
+          this.usuarios = response.data;
         
         })
         .catch((error) => {
@@ -186,7 +171,7 @@ export default {
       //this.dialogDelete = true;
       if (item.estado === 0){
         axios
-        .put("http://localhost:3000/api/categoria/activate",{
+        .put("http://localhost:3000/api/usuario/activate",{
           'id':this.editedItem.id,
           'nombre':this.editedItem.nombre,
           'estado':1
@@ -205,7 +190,7 @@ export default {
         });
       }else{
         axios
-        .put("http://localhost:3000/api/categoria/deactivate",{
+        .put("http://localhost:3000/api/usuario/deactivate",{
           'id':this.editedItem.id,
           'nombre':this.editedItem.nombre,
           'estado':0
@@ -253,10 +238,10 @@ export default {
       if (this.editedIndex > -1) {
         //Object.assign(this.desserts[this.editedIndex], this.editedItem);
         axios
-        .put("http://localhost:3000/api/categoria/update",{
+        .put("http://localhost:3000/api/usuario/update",{
           'id':this.editedItem.id,
           'nombre': this.editedItem.nombre,
-          'descripcion': this.editedItem.descripcion          
+          'rol': this.editedItem.rol          
         },{
           headers:{
             token: this.$store.state.token
@@ -273,9 +258,9 @@ export default {
       } else {
         //this.desserts.push(this.editedItem);
         axios        
-        .post("http://localhost:3000/api/categoria/add",{
+        .post("http://localhost:3000/api/usuario/add",{
           'nombre': this.editedItem.nombre,
-          'descripcion': this.editedItem.descripcion,
+          'rol': this.editedItem.rol,
           'estado': 0          
         },{
           headers: {

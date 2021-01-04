@@ -16,6 +16,14 @@ const routes = [
 
   },
   {
+    path: '/nosotros',
+    name: 'nosotros',
+    component: () => import( '../views/Nosotros.vue'),
+    meta: {
+      public:true,
+    }
+  },
+  {
     path: '/login',
     name: 'Login',
     // route level code-splitting
@@ -32,22 +40,30 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "categoria" */ '../views/authApp.vue'),
+    component: () => import(/* webpackChunkName: "segura" */ '../views/auth.vue'),
     meta: {
       auth:true,
     },
     children: [{
       path: '/',
       name: 'authHome',
-      component: () => import(/* webpackChunkName: "about" */ '../views/authHome.vue')
+      component: () => import(/* webpackChunkName: "auth-home" */ '../views/authHome.vue'),
+      meta: {
+        auth:true,
+      },
     },
+    
     {
       path: 'categorias',
-      name: 'About',
+      name: 'categorias',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "categoria" */ '../views/categoria.vue')
+      component: () => import(/* webpackChunkName: "categoria" */ '../views/categoria.vue'),
+      meta: {
+        auth:true,
+        //administrador:true,
+      },
     },
     {
       path: 'articulos',
@@ -56,6 +72,11 @@ const routes = [
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "articulos" */ '../views/articulos.vue'),
+    }, 
+    {
+      path: 'usuarios',
+      name: 'usuarios',
+      component: () => import( '../views/Usuarios.vue'),
     }
   ],
   },
@@ -71,7 +92,7 @@ router.beforeEach((to, from,next)=>{
    if(to.matched.some(record  => record.meta.public)){
     next();
    }else if(to.matched.some(record  => record.meta.auth )){
-      if (store.state.user && store.state.user.rol === 'Administrador' ){      
+      if (store.state.user){
         next()
       }else{
         next({name:"Login"})
